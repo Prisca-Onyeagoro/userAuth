@@ -1,28 +1,19 @@
-import mongoose from 'mongoose';
+import mongoose, { Error } from 'mongoose';
 
-// const connect = async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URL);
-//     console.log('connected to mongodb');
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
-
-// export default connect;
-
-const connect = async () => {
+const dbconn = async () => {
+  const { connection } = await mongoose.connect(process.env.MONGO_URL, {
+    connectTimeoutMS: 20000,
+  });
   try {
-    const { connection } = await mongoose.connect(process.env.MONGO_URL);
-    if (connection.readyState == 1) {
-      return Promise.resolve(true);
+    if (connection.readyState === 1) {
+      Promise.resolve(true);
+      console.log('Database successfully connected');
     }
-    console.log('connected to mongodb');
-    //   ready state returns three values 1= connected, 0 = disconnected, 2=connecting 3= disconnecting
   } catch (error) {
-    Promise.reject(error);
-    console.log(error);
+    Promise.reject(false);
+
+    throw Error('There was a problem connecting to the database');
   }
 };
 
-export default connect;
+export default dbconn;

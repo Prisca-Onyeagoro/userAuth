@@ -1,14 +1,50 @@
+import { connect } from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
+import owner from '../../../../../model/Usermodel';
+import { hash } from 'bcryptjs';
+import baseconn from '@/utils/dbconfig';
+import own from '../../../../../model/Usermodel';
 
 export async function POST(request) {
-  const { name, password, school, nation } = await request.json();
+  await baseconn();
 
-  console.log(
-    `The name of the user is: ${name}`,
-    `The password of the user is: ${password}`,
-    `The user school is: ${school}`,
-    `The user nation is: ${nation}`
-  );
+  try {
+    const { name, email, school, password } = await request.json();
 
-  return NextResponse.json({ message: 'name saved' });
+    //  check if fields are empty
+    if (!name || !email || !school || !password) {
+      return NextResponse(
+        { error: 'Fields are empty fill them up' },
+        { status: 200 }
+      );
+    }
+
+    const SaveUser = await own.create({
+      name,
+      email,
+      school,
+      password: await hash(password, 10),
+    });
+    return NextResponse.json({ SaveUser }, { status: 201 });
+
+    // check if the user registering has registered before
+    // const userexist = await owner.findOne({ email });
+    // if (userexist) {
+    //   return NextResponse(
+    //     { message: 'This email already exist' },
+    //     { status: 200 }
+    //   );
+    // }
+
+    // //  create the user
+    // const SaveUser = await own.create({
+    //   name,
+    //   email,
+    //   school,
+    //   password: await hash(password, 10),
+    // });
+    // return NextResponse.json({ SaveUser }, { status: 201 });
+  } catch (error) {
+    console.log(error.message);
+  }
 }

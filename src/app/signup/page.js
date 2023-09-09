@@ -12,7 +12,7 @@ export default function signup() {
   const [name, setUser] = useState('');
   const [password, setPass] = useState('');
   const [school, setSchool] = useState('');
-  const [nation, setNation] = useState('');
+  const [email, setEmail] = useState('');
 
   const Onsignup = async (e) => {
     const res = await fetch('api/users/signup', {
@@ -20,12 +20,12 @@ export default function signup() {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: JSON.stringify({ name, password, nation, school }),
+      body: JSON.stringify({ name, password, school, email }),
     });
     setUser('');
     setPass('');
     setSchool('');
-    setNation('');
+    setEmail('');
   };
 
   return (
@@ -51,22 +51,11 @@ export default function signup() {
           <div>
             <input
               className="text-black font-medium text-sm border-t-8 border-yellow-900 rounded-lg p-4 outline-none mb-5"
-              id="password"
-              type="number"
-              value={password}
-              onChange={(e) => setPass(e.target.value)}
-              placeholder="password"
-            />
-          </div>
-
-          <div>
-            <input
-              className="text-black font-medium text-sm border-t-8 border-yellow-900 rounded-lg p-4 outline-none mb-5"
               id="nation"
               type="text"
-              value={nation}
-              onChange={(e) => setNation(e.target.value)}
-              placeholder="Enter Your Country"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter Your email"
             />
           </div>
 
@@ -78,6 +67,17 @@ export default function signup() {
               value={school}
               onChange={(e) => setSchool(e.target.value)}
               placeholder="Your School"
+            />
+          </div>
+
+          <div>
+            <input
+              className="text-black font-medium text-sm border-t-8 border-yellow-900 rounded-lg p-4 outline-none mb-5"
+              id="password"
+              type="text"
+              value={password}
+              onChange={(e) => setPass(e.target.value)}
+              placeholder="password"
             />
           </div>
 

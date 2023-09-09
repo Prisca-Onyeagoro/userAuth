@@ -1,16 +1,20 @@
 import { Schema, model, models } from 'mongoose';
 
-const ownerSchema = new Schema(
+const ownSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: [true, 'provide a name'],
+      unique: true,
+    },
     email: {
       type: String,
       required: [true, 'provide a email'],
       unique: true,
     },
-    username: {
+    school: {
       type: String,
-      required: [true, 'provide a username'],
-      unique: true,
+      required: [true, 'provide your school name'],
     },
     password: {
       type: String,
@@ -20,9 +24,9 @@ const ownerSchema = new Schema(
   { timestamps: true }
 );
 
-const owner = models.owner || model('owner', ownerSchema);
+const own = models.own || model('own', ownSchema);
 
-export default owner;
+export default own;
 
 // const UserSchema = new Schema({
 //   email: String,
