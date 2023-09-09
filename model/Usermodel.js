@@ -5,7 +5,6 @@ const ownSchema = new Schema(
     name: {
       type: String,
       required: [true, 'provide a name'],
-      unique: true,
     },
     email: {
       type: String,

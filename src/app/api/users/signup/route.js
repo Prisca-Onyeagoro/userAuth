@@ -5,7 +5,7 @@ import { hash } from 'bcryptjs';
 import baseconn from '@/utils/dbconfig';
 import own from '../../../../../model/Usermodel';
 
-export async function POST(request) {
+export async function POST(request, response) {
   await baseconn();
 
   try {
@@ -13,9 +13,25 @@ export async function POST(request) {
 
     //  check if fields are empty
     if (!name || !email || !school || !password) {
-      return NextResponse(
-        { error: 'Fields are empty fill them up' },
-        { status: 200 }
+      return new NextResponse(
+        JSON.stringify({
+          message: 'Fill up the empty fields',
+          status: 400,
+          error: 'fill up the empty fields',
+        })
+      );
+    }
+
+    //  check if the user has already be registered
+
+    const userexist = await own.findOne({ email });
+    if (userexist) {
+      return new NextResponse(
+        JSON.stringify({
+          message: 'Already have an account, kindly login',
+          status: 400,
+          error: 'Already have an account, kindly login',
+        })
       );
     }
 
@@ -26,24 +42,6 @@ export async function POST(request) {
       password: await hash(password, 10),
     });
     return NextResponse.json({ SaveUser }, { status: 201 });
-
-    // check if the user registering has registered before
-    // const userexist = await owner.findOne({ email });
-    // if (userexist) {
-    //   return NextResponse(
-    //     { message: 'This email already exist' },
-    //     { status: 200 }
-    //   );
-    // }
-
-    // //  create the user
-    // const SaveUser = await own.create({
-    //   name,
-    //   email,
-    //   school,
-    //   password: await hash(password, 10),
-    // });
-    // return NextResponse.json({ SaveUser }, { status: 201 });
   } catch (error) {
     console.log(error.message);
   }

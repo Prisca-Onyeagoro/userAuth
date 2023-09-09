@@ -1,14 +1,13 @@
 'use client';
-import axios from 'axios';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 export const metadata = {
   title: 'Sign up page',
   description: 'Sign up Page',
 };
 export default function signup() {
+  const router = useRouter();
   const [name, setUser] = useState('');
   const [password, setPass] = useState('');
   const [school, setSchool] = useState('');
@@ -22,6 +21,16 @@ export default function signup() {
       method: 'POST',
       body: JSON.stringify({ name, password, school, email }),
     });
+
+    const data = await res.json();
+    console.log(data);
+    const error = document.getElementById('err');
+    if (data.message) {
+      return (error.innerText = data.message);
+    }
+    if (!data.error) {
+      router.push('/product');
+    }
     setUser('');
     setPass('');
     setSchool('');
@@ -36,6 +45,7 @@ export default function signup() {
             <p className="text-lg font-extrabold ">
               Dont Have an account? Kindly Register :)
             </p>
+            <p id="err" className="text-red-600"></p>
           </div>
           <div className="mt-6">
             <input
@@ -88,6 +98,9 @@ export default function signup() {
           >
             Submit
           </button>
+          <p>
+            Have an account? <Link href="/login"> click here to login</Link>
+          </p>
         </div>
       </div>
     </main>
