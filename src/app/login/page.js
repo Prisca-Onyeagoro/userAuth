@@ -27,7 +27,7 @@ export default function login() {
     }
 
     if (!data.error) {
-      router.push('/product');
+      router.push('/Product');
     }
     setEmail('');
     setPassword('');

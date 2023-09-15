@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Loading from './loading';
 export const metadata = {
   title: 'Sign up page',
   description: 'Sign up Page',
@@ -21,7 +22,6 @@ export default function signup() {
       method: 'POST',
       body: JSON.stringify({ name, password, school, email }),
     });
-
     const data = await res.json();
     console.log(data);
     const error = document.getElementById('err');
@@ -29,7 +29,7 @@ export default function signup() {
       return (error.innerText = data.message);
     }
     if (!data.error) {
-      router.push('/product');
+      router.push('/Product');
     }
     setUser('');
     setPass('');

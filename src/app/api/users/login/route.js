@@ -44,7 +44,7 @@ export async function POST(request) {
       status: true,
     });
   } catch (error) {
-    console.log(error);
-    return new NextResponse(JSON.stringify({ message: error.message }));
+    console.log({ message: error.message });
+    // return new NextResponse(JSON.stringify({ message: error.message }));
   }
 }
